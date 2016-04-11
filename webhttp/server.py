@@ -86,8 +86,16 @@ class Server:
         conn_socket.bind((self.hostname, self.server_port))
         conn_socket.listen(5)
         print ("\tServer/run(self)//conn_socket.listen(1)")
-        ch = ConnectionHandler(conn_socket, self.hostname, self.timeout)
-        ch.start()
+
+        threadlist = []
+        for i in range (10):
+            ch = ConnectionHandler(conn_socket, self.hostname, self.timeout)
+            chthread = threading.Thread(target=ch.start())
+            chthread.start()
+            threadlist.append(chthread)
+
+        #ch.start()
+
         while not self.done:
             pass
 

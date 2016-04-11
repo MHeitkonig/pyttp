@@ -39,7 +39,7 @@ class RequestParser:
             while index < len(word_split):
                 http_request.set_header(word_split[index], word_split[index+1])
                 index = index + 2
-
+            # probably reason for array index out of bounds in safari
             http_requests.append(http_request)
         return http_requests
 
