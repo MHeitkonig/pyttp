@@ -49,7 +49,7 @@ class Message(object):
         Returns:
             str: representation the can be sent over socket
         """
-        message = str(self.get_header("status"))
+        message = ""
         return message
 
 
@@ -86,5 +86,5 @@ class Response(Message):
         Returns:
             str: representation the can be sent over socket
         """
-        self.startline = str(Message) + " 500 " + str(self.reasondict[500])
+        self.startline = "HTTP/1.1 500 Internal Server Error"
         return super(Response, self).__str__()

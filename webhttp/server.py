@@ -47,11 +47,14 @@ class ConnectionHandler(threading.Thread):
         print "User-Agent = " + t.get_header("User-Agent:")
         print "[L>] ---- end parsed ---- "
         r = parser.ResponseParser()
-        response = r.parse_response(t)
+        #response = r.parse_response(t)
+        response1 = "HTTP/1.1 500 Internal Server Error"
+        response2 = "HTTP/1.1 404 Not Found"
+        msg = response2
         print "\n[L>] --- begin response --- "
-        print response
+        print msg
         print "[L>] ---- end response ----"
-        conn.send()
+        conn.send(msg)
         conn.close()
         pass
 
