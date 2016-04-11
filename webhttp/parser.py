@@ -30,6 +30,7 @@ class RequestParser:
         for request in requests:
             http_request = webhttp.message.Request()
             word_split = re.compile('\\S+').findall(request) # Thanks to: https://stackoverflow.com/questions/225337/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters
+            # nvm doesn't work for parsing user agent and content encoding
             http_request.set_header("Method:", word_split[0])
             http_request.set_header("URI:", word_split[1])
             http_request.set_header("Version:", word_split[2])
