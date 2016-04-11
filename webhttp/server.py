@@ -26,10 +26,10 @@ class ConnectionHandler(threading.Thread):
         self.addr = addr
         self.timeout = timeout
 
-    def handle_connection(self):
+    def handle_connection(self, conn, addr):
         """Handle a new connection"""
         print "[L>] ConnectionHandler/handle_connection"
-        conn, addr = self.conn_socket.accept()
+        #conn, addr = self.conn_socket.accept()
         print "Connected to: " + addr[0] + ":" + str(addr[1])
         requests = conn.recv(1024)
         print str(requests)
@@ -58,9 +58,9 @@ class ConnectionHandler(threading.Thread):
         conn.close()
         pass
 
-    def run(self):
+    def run(self, conn, addr):
         print "[L>] ConnectionHandler/run"
-        self.handle_connection()
+        self.handle_connection(conn, addr)
 
 
 class Server:
@@ -86,13 +86,16 @@ class Server:
         conn_socket.bind((self.hostname, self.server_port))
         conn_socket.listen(5)
         print ("\tServer/run(self)//conn_socket.listen(1)")
-
-        threadlist = []
-        for i in range (10):
+        while True:
+            conn, addr = conn_socket.accept()
             ch = ConnectionHandler(conn_socket, self.hostname, self.timeout)
-            chthread = threading.Thread(target=ch.start())
-            chthread.start()
-            threadlist.append(chthread)
+            threading.Thread(target = ch.run(conn, addr))
+
+        #threadlist = []
+        #ch = ConnectionHandler(conn_socket, self.hostname, self.timeout)
+        #chthread = threading.Thread(target=ch.start())
+        #chthread.start()
+        #threadlist.append(chthread)
 
         #ch.start()
 
