@@ -6,7 +6,8 @@ This module contains a HTTP server
 import threading
 #import socket
 from socket import *
-
+import parser
+import message
 
 class ConnectionHandler(threading.Thread):
     """Connection Handler for HTTP Server"""
@@ -27,14 +28,35 @@ class ConnectionHandler(threading.Thread):
 
     def handle_connection(self):
         """Handle a new connection"""
-        print "[>] ConnectionHandler/handle_connection"
+        print "[L>] ConnectionHandler/handle_connection"
         conn, addr = self.conn_socket.accept()
         print "Connected to: " + addr[0] + ":" + str(addr[1])
-        conn.send("Hello, world!")
+        requests = conn.recv(1024)
+        print str(requests)
+        p = parser.RequestParser()
+        m = message.Request()
+        parsed = p.parse_requests(requests)
+        print "[L>] --- begin parsed --- "
+        t = parsed[0]
+        print "Method = " + t.get_header("Method:")
+        print "URI = " + t.get_header("URI:")
+        print "Version = " + t.get_header("Version:")
+        print "Accept-Encoding = " + t.get_header("Accept-Encoding:")
+        print "Host = " + t.get_header("Host:")
+        print "Connection = " + t.get_header("Connection:")
+        print "User-Agent = " + t.get_header("User-Agent:")
+        print "[L>] ---- end parsed ---- "
+        r = parser.ResponseParser()
+        response = r.parse_response(t)
+        print "\n[L>] --- begin response --- "
+        print response
+        print "[L>] ---- end response ----"
+        conn.send()
+        conn.close()
         pass
 
     def run(self):
-        print "[>] ConnectionHandler/run"
+        print "[L>] ConnectionHandler/run"
         self.handle_connection()
 
 
@@ -56,10 +78,10 @@ class Server:
 
     def run(self):
         """Run the HTTP Server and start listening"""
-        print ("[>] Server/run(self)") # debug
+        print ("[L>] Server/run(self)") # debug
         conn_socket = socket(AF_INET, SOCK_STREAM)
         conn_socket.bind((self.hostname, self.server_port))
-        conn_socket.listen(1)
+        conn_socket.listen(5)
         print ("\tServer/run(self)//conn_socket.listen(1)")
         ch = ConnectionHandler(conn_socket, self.hostname, self.timeout)
         ch.start()

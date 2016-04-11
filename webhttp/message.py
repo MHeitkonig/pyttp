@@ -19,19 +19,19 @@ class Message(object):
         self.startline = ""
         self.body = ""
         self.headerdict = dict()
-        
+
     def set_header(self, name, value):
         """Add a header and its value
-        
+
         Args:
             name (str): name of header
             value (str): value of header
         """
         self.headerdict[name] = value
-        
+
     def get_header(self, name):
         """Get the value of a header
-        
+
         Args:
             name (str): name of header
 
@@ -42,14 +42,14 @@ class Message(object):
             return self.headerdict[name]
         else:
             return ""
-        
+
     def __str__(self):
         """Convert the Message to a string
-        
+
         Returns:
             str: representation the can be sent over socket
         """
-        message = ""
+        message = str(self.get_header("status"))
         return message
 
 
@@ -59,18 +59,18 @@ class Request(Message):
     def __init__(self):
         """Initialize the Request"""
         super(Request, self).__init__()
-        self.method = ""
+        self.method = self.get_header("status")
         self.uri = ""
-        
+
     def __str__(self):
         """Convert the Request to a string
 
         Returns:
             str: representation the can be sent over socket
         """
-        self.startline = ""
+        self.startline = "" + self.method
         return super(Request, self).__str__()
-        
+
 
 class Response(Message):
     """Class that stores a HTTP Response"""
@@ -79,12 +79,12 @@ class Response(Message):
         """Initialize the Response"""
         super(Response, self).__init__()
         self.code = 500
-    
+
     def __str__(self):
         """Convert the Response to a string
 
         Returns:
             str: representation the can be sent over socket
         """
-        self.startline = ""                                      
+        self.startline = str(Message) + " 500 " + str(self.reasondict[500])
         return super(Response, self).__str__()
