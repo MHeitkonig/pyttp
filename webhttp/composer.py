@@ -39,21 +39,15 @@ class ResponseComposer:
         # Stub code
         response.code = 500
         response.set_header("Version", "HTTP/1.1")
-
-        #response.set_header("Connection", "keep-alive")
         resource = request.get_header("URI")
-
         response.body = ""
-
         contentdir = str(os.getcwd()) + "/content/"
-        #print contentdir
 
         if len(resource) == 1 and resource[0] == "/":
             resource = "index.html"
         else:
             if resource[-1] == "/":
                 resource = resource + "index.html"
-                #print "loglog " + resource
 
         absolute_path = contentdir + resource
         status_dir = contentdir + "status/"
@@ -77,7 +71,7 @@ class ResponseComposer:
             document = open(absolute_path, "r")
             response.body = document.read()
 
-            
+
         if "gzip" in request.get_header("Accept-Encoding"):
             response.set_header("Content-Encoding", "gzip")
             out = StringIO.StringIO()
@@ -87,7 +81,6 @@ class ResponseComposer:
 
         m = md5.new() # Not concerned about collision attacks here
         m.update(response.body)
-        #digest = m.hexdigest()
         response.set_header("ETag", m.hexdigest())
         response.set_header("Date", self.make_date_string())
         response.set_header("Content-Length", len(response.body))

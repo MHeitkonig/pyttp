@@ -7,8 +7,10 @@ reasondict = {
     # Dictionary for code reasons
     # Format: code : "Reason"
     200 : "OK",
+    304 : "Not Modified",
     403 : "Forbidden",
     404 : "Not Found",
+    406 : "Not Acceptable",
     418 : "I'm A Teapot",
     500 : "Internal Server Error"
 
@@ -112,7 +114,7 @@ class Response(Message):
         """
         message  = self.get_header("Version") + " " + str(self.code) + " " + reasondict[self.code] + "\r\n"
         message += "Date: " + str(self.get_header("Date")) + "\r\n"
-        #message += "Content-Type: " + "text/html" + "\r\n"
+        #message += "Content-Type: " + "text/html" + "\r\n" # todo!
         if (self.get_header("Content-Encoding") != ""):
             message += "Content-Encoding: " + str(self.get_header("Content-Encoding")) + "\r\n"
         message += "Content-Length:" + str(self.get_header("Content-Length")) + "\r\n"
@@ -120,9 +122,5 @@ class Response(Message):
         message += "Connection: " + self.get_header("Connection") + "\r\n"
         message += "\n"
         message += self.body
-        #print(str(self.get_header("Date")) + " <<<<<")
-        #print("> " + str(self.headerdict)) + "< "
-        print(message)
+        #print(message)
         return message
-
-        #return super(Response, self).__str__()
