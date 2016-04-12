@@ -48,4 +48,4 @@ class ResponseComposer:
         Returns:
             str: formatted string of date and time
         """
-        return time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+        return time.strftime("%a, %d %b %Y %H:%M:%S GMT", time.gmtime())
