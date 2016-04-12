@@ -6,7 +6,11 @@ This modules contains classes for representing HTTP responses and requests.
 reasondict = {
     # Dictionary for code reasons
     # Format: code : "Reason"
+    200 : "OK",
+    403 : "Forbidden",
+    404 : "Not Found",
     500 : "Internal Server Error"
+
 }
 
 
@@ -49,6 +53,25 @@ class Message(object):
         Returns:
             str: representation the can be sent over socket
         """
+
+        return ""
+
+
+class Request(Message):
+    """Class that stores a HTTP request"""
+
+    def __init__(self):
+        """Initialize the Request"""
+        super(Request, self).__init__()
+        self.method = self.get_header("status")
+        self.uri = ""
+
+    def __str__(self):
+        """Convert the Request to a string
+
+        Returns:
+            str: representation the can be sent over socket
+        """
         message = self.get_header("Method") + " " + self.get_header("URI") + " " + self.get_header("Version") + "\r\n"
         if self.get_header("Host") != "":
             message += self.get_header("Host") + "\r\n"
@@ -69,25 +92,6 @@ class Message(object):
         return message
 
 
-class Request(Message):
-    """Class that stores a HTTP request"""
-
-    def __init__(self):
-        """Initialize the Request"""
-        super(Request, self).__init__()
-        self.method = self.get_header("status")
-        self.uri = ""
-
-    def __str__(self):
-        """Convert the Request to a string
-
-        Returns:
-            str: representation the can be sent over socket
-        """
-        self.startline = ""
-        return super(Request, self).__str__()
-
-
 class Response(Message):
     """Class that stores a HTTP Response"""
 
@@ -102,5 +106,9 @@ class Response(Message):
         Returns:
             str: representation the can be sent over socket
         """
-        self.startline = "HTTP/1.1 500 Internal Server Error"
-        return super(Response, self).__str__()
+        message  = self.get_header("Version") + " " + str(self.code) + " " + reasondict[self.code] + "\r\n"
+
+        message += "\n"
+        return message
+
+        #return super(Response, self).__str__()

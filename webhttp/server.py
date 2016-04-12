@@ -8,6 +8,7 @@ import threading
 from socket import *
 import parser
 import message
+import composer
 
 class ConnectionHandler(threading.Thread):
     """Connection Handler for HTTP Server"""
@@ -49,15 +50,18 @@ class ConnectionHandler(threading.Thread):
         print "[L>] -A- begin parsed -A- "
         print str(parsed[0])
         print "[L>] -A-- end parsed --A- "
-        r = parser.ResponseParser()
+        #r = parser.ResponseParser()
+        r = composer.ResponseComposer(15)
         #response = r.parse_response(t)
-        response1 = "HTTP/1.1 500 Internal Server Error\n\n"
-        response2 = "HTTP/1.1 404 Not Found\n\n"
-        msg = response1
+        #response1 = "HTTP/1.1 500 Internal Server Error\n\n"
+        #response2 = "HTTP/1.1 404 Not Found\n\n"
+        #msg = response1
         print "\n[L>] --- begin response --- "
-        print msg
+        response = r.compose_response(r)
+        print str(response)
+        #print msg
         print "[L>] ---- end response ----"
-        conn.send(msg)
+        conn.send(str(response))
         conn.close()
         pass
 

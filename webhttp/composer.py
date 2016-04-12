@@ -15,15 +15,15 @@ class ResponseComposer:
 
     def __init__(self, timeout):
         """Initialize the ResponseComposer
-        
+
         Args:
             timeout (int): connection timeout
         """
         self.timeout = timeout
-    
+
     def compose_response(self, request):
         """Compose a response to a request
-        
+
         Args:
             request (webhttp.Request): request from client
 
@@ -34,7 +34,8 @@ class ResponseComposer:
         response = webhttp.message.Response()
 
         # Stub code
-        response.code = 200
+        response.code = 500
+        response.set_header("Version", "HTTP/1.1")
         response.set_header("Content-Length", 4)
         response.set_header("Connection", "close")
         response.body = "Test"
@@ -43,7 +44,7 @@ class ResponseComposer:
 
     def make_date_string(self):
         """Make string of date and time
-        
+
         Returns:
             str: formatted string of date and time
         """

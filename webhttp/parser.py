@@ -85,7 +85,7 @@ class ResponseParser:
         """Initialize the ResponseParser"""
         pass
 
-    def parse_response(self, buff):
+    def parse_response(self, parsedRequests):
         """Parse responses in buffer
 
         Args:
@@ -95,9 +95,52 @@ class ResponseParser:
             webhttp.Response
         """
         response = webhttp.message.Response()
-        response.set_header("Version:", "HTTP/1.1")
-        if buff.get_header("URI:") == "/index.html":
-            response.set_header("StatusCode:", "200")
-        else:
-            response.set_header("StatusCode:", "404")
-        return response
+        for request in parsedRequests:
+            if request.get_header("Method") == "GET":
+                self.parse_get(request, response)
+
+        response.set_header("Version", "HTTP/1.1")
+
+        #if buff.get_header("URI") == "/index.html":
+        #    response.set_header("Code", "200")
+        #else:
+        #    response.set_header("Code", "404")
+        return ""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#because Atom won't let me scroll down and I don't have a monitor stand
