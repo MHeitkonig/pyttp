@@ -95,9 +95,11 @@ class ResponseParser:
             webhttp.Response
         """
         response = webhttp.message.Response()
-        for request in parsedRequests:
-            if request.get_header("Method") == "GET":
-                self.parse_get(request, response)
+        #for request in parsedRequests:
+            #if request.get_header("Method") == "GET":
+                #self.parse_get(request, response)
+            #else:
+
 
         response.set_header("Version", "HTTP/1.1")
 

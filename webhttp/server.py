@@ -57,7 +57,7 @@ class ConnectionHandler(threading.Thread):
         #response2 = "HTTP/1.1 404 Not Found\n\n"
         #msg = response1
         print "\n[L>] --- begin response --- "
-        response = r.compose_response(r)
+        response = r.compose_response(t)
         print str(response)
         #print msg
         print "[L>] ---- end response ----"
@@ -90,7 +90,7 @@ class Server:
         """Run the HTTP Server and start listening"""
         print ("[L>] Server/run(self)") # debug
         conn_socket = socket(AF_INET, SOCK_STREAM)
-        conn_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+        conn_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1) # because I had to switch ports on every crash
         conn_socket.bind((self.hostname, self.server_port))
         conn_socket.listen(5)
         print ("\tServer/run(self)//conn_socket.listen(1)")
@@ -99,12 +99,6 @@ class Server:
             ch = ConnectionHandler(conn_socket, self.hostname, self.timeout)
             threading.Thread(target = ch.run(conn, addr))
 
-        #threadlist = []
-        #ch = ConnectionHandler(conn_socket, self.hostname, self.timeout)
-        #chthread = threading.Thread(target=ch.start())
-        #chthread.start()
-        #threadlist.append(chthread)
-        #ch.start()
 
         while not self.done:
             pass
