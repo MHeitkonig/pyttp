@@ -39,17 +39,16 @@ class RequestParser:
             req.set_header("URI", uri)
             req.set_header("Version", version)
             remaining_headers = re.findall(r"(?P<name>.*?): (?P<value>.*?)\r\n", request)
-            print ">>>>>" + str(len(remaining_headers)) + "<<<<<<"
-            print str(remaining_headers)
-            print remaining_headers[0][0]
-            print remaining_headers[0][1]
+            #print ">>>>>" + str(len(remaining_headers)) + "<<<<<<"
+            #print str(remaining_headers)
+            #print remaining_headers[0][0]
+            #print remaining_headers[0][1]
             c = 0
             while c < len(remaining_headers):
                 req.set_header(remaining_headers[c][0], remaining_headers[c][1])
                 c += 1
-
-            #while c + 2 < len(dict)
             # Thanks to https://bt3gl.github.io/black-hat-python-infinite-possibilities-with-the-scapy-module.html
+
             #word_split = re.compile('\\S+').findall(request) # Thanks to: https://stackoverflow.com/questions/225337/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters
             # nvm doesn't work for parsing user agent and content encoding
             #http_request.set_header("Method:", word_split[0])

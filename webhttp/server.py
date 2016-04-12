@@ -36,7 +36,7 @@ class ConnectionHandler(threading.Thread):
         p = parser.RequestParser()
         m = message.Request()
         parsed = p.parse_requests(requests)
-        print "[L>] --- begin parsed --- "
+        print "[L>] -M- begin parsed -M- "
         t = parsed[0]
         print "Method = " + t.get_header("Method")
         print "URI = " + t.get_header("URI")
@@ -45,7 +45,10 @@ class ConnectionHandler(threading.Thread):
         print "Host = " + t.get_header("Host")
         print "Connection = " + t.get_header("Connection")
         print "User-Agent = " + t.get_header("User-Agent")
-        print "[L>] ---- end parsed ---- "
+        print "[L>] -M-- end parsed --M- "
+        print "[L>] -A- begin parsed -A- "
+        print str(parsed[0])
+        print "[L>] -A-- end parsed --A- "
         r = parser.ResponseParser()
         #response = r.parse_response(t)
         response1 = "HTTP/1.1 500 Internal Server Error\n\n"

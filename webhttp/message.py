@@ -49,7 +49,23 @@ class Message(object):
         Returns:
             str: representation the can be sent over socket
         """
-        message = ""
+        message = self.get_header("Method") + " " + self.get_header("URI") + " " + self.get_header("Version") + "\r\n"
+        if self.get_header("Host") != "":
+            message += self.get_header("Host") + "\r\n"
+        if self.get_header("User-Agent") != "":
+            message += self.get_header("User-Agent") + "\r\n"
+        if self.get_header("Accept") != "":
+            message += self.get_header("Accept") + "\r\n"
+        if self.get_header("Accept-Language") != "":
+            message += self.get_header("Accept-Language") + "\r\n"
+        if self.get_header("Accept-Encoding") != "":
+            message += self.get_header("Accept-Encoding") + "\r\n"
+        if self.get_header("DNT") != "":
+            message += self.get_header("DNT") + "\r\n"
+        if self.get_header("Connection") != "":
+            message += self.get_header("Connection") + "\r\n"
+        message += "\n"
+
         return message
 
 
@@ -68,7 +84,7 @@ class Request(Message):
         Returns:
             str: representation the can be sent over socket
         """
-        self.startline = "" + self.method
+        self.startline = ""
         return super(Request, self).__str__()
 
 
