@@ -90,6 +90,7 @@ class Server:
         """Run the HTTP Server and start listening"""
         print ("[L>] Server/run(self)") # debug
         conn_socket = socket(AF_INET, SOCK_STREAM)
+        conn_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         conn_socket.bind((self.hostname, self.server_port))
         conn_socket.listen(5)
         print ("\tServer/run(self)//conn_socket.listen(1)")
