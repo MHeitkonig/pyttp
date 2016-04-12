@@ -111,10 +111,13 @@ class Response(Message):
             str: representation the can be sent over socket
         """
         message  = self.get_header("Version") + " " + str(self.code) + " " + reasondict[self.code] + "\r\n"
-        message += str(self.get_header("Date")) + "\r\n"
-        message += str(self.get_header("Content-Length")) + "\r\n"
-        message += str(self.get_header("ETag")) + "\r\n"
-        message += self.get_header("Connection") + "\r\n"
+        message += "Date: " + str(self.get_header("Date")) + "\r\n"
+        #message += "Content-Type: " + "text/html" + "\r\n"
+        if (self.get_header("Content-Encoding") != ""):
+            message += "Content-Encoding: " + str(self.get_header("Content-Encoding")) + "\r\n"
+        message += "Content-Length:" + str(self.get_header("Content-Length")) + "\r\n"
+        message += "ETag: " + str(self.get_header("ETag")) + "\r\n"
+        message += "Connection: " + self.get_header("Connection") + "\r\n"
         message += "\n"
         message += self.body
         #print(str(self.get_header("Date")) + " <<<<<")

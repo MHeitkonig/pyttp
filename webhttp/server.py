@@ -66,11 +66,11 @@ class ConnectionHandler(threading.Thread):
         print response.get_header("URI")
         if t.get_header("Connection") == "close":
             conn.close()
-            print "[Closed connection: " + addr[0] + ":" + str(addr[1]) + " on request of client]"
-        else:
-            conn.close() # todo: fix this
+            print "[Closed connection: " + addr[0] + ":" + str(addr[1]) + " because the client requested it]"
+        #else:
+            # todo: fix this
             #print "[!] Closed connection: " + addr[0] + ":" + str(addr[1]) + " despite being keep-alive]"
-
+        conn.close()
         pass
 
     def run(self, conn, addr):

@@ -6,7 +6,8 @@ HTTP requests from a client.
 
 import time
 import md5
-
+import StringIO
+import gzip
 import webhttp.message
 import webhttp.resource
 import os
@@ -38,8 +39,8 @@ class ResponseComposer:
         # Stub code
         response.code = 500
         response.set_header("Version", "HTTP/1.1")
-        response.set_header("Content-Length", 4)
-        response.set_header("Connection", "close")
+
+        #response.set_header("Connection", "keep-alive")
         resource = request.get_header("URI")
 
         response.body = ""
@@ -76,12 +77,20 @@ class ResponseComposer:
             document = open(absolute_path, "r")
             response.body = document.read()
 
+            
+        if "gzip" in request.get_header("Accept-Encoding"):
+            response.set_header("Content-Encoding", "gzip")
+            out = StringIO.StringIO()
+            with gzip.GzipFile(fileobj=out, mode="w") as f:
+                f.write(str(response.body))
+            response.body = out.getvalue()
 
         m = md5.new() # Not concerned about collision attacks here
         m.update(response.body)
         #digest = m.hexdigest()
         response.set_header("ETag", m.hexdigest())
         response.set_header("Date", self.make_date_string())
+        response.set_header("Content-Length", len(response.body))
         return response
 
     def make_date_string(self):
