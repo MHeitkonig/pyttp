@@ -34,7 +34,7 @@ class ResponseComposer:
         response = webhttp.message.Response()
 
         # Stub code
-        response.code = 500
+        response.code = 200
         response.set_header("Version", "HTTP/1.1")
         response.set_header("Content-Length", 4)
         response.set_header("Connection", "close")
