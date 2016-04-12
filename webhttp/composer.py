@@ -5,6 +5,7 @@ HTTP requests from a client.
 """
 
 import time
+import md5
 
 import webhttp.message
 import webhttp.resource
@@ -74,7 +75,13 @@ class ResponseComposer:
         else:
             document = open(absolute_path, "r")
             response.body = document.read()
-        response.set_header("Date", self.make_date_string)
+
+
+        m = md5.new() # Not concerned about collision attacks here
+        m.update(response.body)
+        #digest = m.hexdigest()
+        response.set_header("ETag", m.hexdigest())
+        response.set_header("Date", self.make_date_string())
         return response
 
     def make_date_string(self):

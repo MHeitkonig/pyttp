@@ -64,8 +64,13 @@ class ConnectionHandler(threading.Thread):
         conn.send(str(response))
         print addr[0] + ":" + str(addr[1]) + " requested " + t.get_header("URI") + "\t[" + str(response.code) + "]"
         print response.get_header("URI")
-        conn.close()
-        print "[Closed connection: " + addr[0] + ":" + str(addr[1]) + "]"
+        if t.get_header("Connection") == "close":
+            conn.close()
+            print "[Closed connection: " + addr[0] + ":" + str(addr[1]) + " on request of client]"
+        else:
+            conn.close() # todo: fix this
+            #print "[!] Closed connection: " + addr[0] + ":" + str(addr[1]) + " despite being keep-alive]"
+
         pass
 
     def run(self, conn, addr):
