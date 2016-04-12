@@ -38,19 +38,19 @@ class ConnectionHandler(threading.Thread):
         parsed = p.parse_requests(requests)
         print "[L>] --- begin parsed --- "
         t = parsed[0]
-        print "Method = " + t.get_header("Method:")
-        print "URI = " + t.get_header("URI:")
-        print "Version = " + t.get_header("Version:")
-        print "Accept-Encoding = " + t.get_header("Accept-Encoding:")
-        print "Host = " + t.get_header("Host:")
-        print "Connection = " + t.get_header("Connection:")
-        print "User-Agent = " + t.get_header("User-Agent:")
+        print "Method = " + t.get_header("Method")
+        print "URI = " + t.get_header("URI")
+        print "Version = " + t.get_header("Version")
+        print "Accept-Encoding = " + t.get_header("Accept-Encoding")
+        print "Host = " + t.get_header("Host")
+        print "Connection = " + t.get_header("Connection")
+        print "User-Agent = " + t.get_header("User-Agent")
         print "[L>] ---- end parsed ---- "
         r = parser.ResponseParser()
         #response = r.parse_response(t)
-        response1 = "HTTP/1.1 500 Internal Server Error"
-        response2 = "HTTP/1.1 404 Not Found"
-        msg = response2
+        response1 = "HTTP/1.1 500 Internal Server Error\n\n"
+        response2 = "HTTP/1.1 404 Not Found\n\n"
+        msg = response1
         print "\n[L>] --- begin response --- "
         print msg
         print "[L>] ---- end response ----"
@@ -96,7 +96,6 @@ class Server:
         #chthread = threading.Thread(target=ch.start())
         #chthread.start()
         #threadlist.append(chthread)
-
         #ch.start()
 
         while not self.done:
