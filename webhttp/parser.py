@@ -39,6 +39,7 @@ class RequestParser:
             req.set_header("URI", uri)
             req.set_header("Version", version)
             remaining_headers = re.findall(r"(?P<name>.*?): (?P<value>.*?)\r\n", request)
+            # Thanks to https://bt3gl.github.io/black-hat-python-infinite-possibilities-with-the-scapy-module.html
             #print ">>>>>" + str(len(remaining_headers)) + "<<<<<<"
             #print str(remaining_headers)
             #print remaining_headers[0][0]
@@ -47,7 +48,7 @@ class RequestParser:
             while c < len(remaining_headers):
                 req.set_header(remaining_headers[c][0], remaining_headers[c][1])
                 c += 1
-            # Thanks to https://bt3gl.github.io/black-hat-python-infinite-possibilities-with-the-scapy-module.html
+
 
             #word_split = re.compile('\\S+').findall(request) # Thanks to: https://stackoverflow.com/questions/225337/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters
             # nvm doesn't work for parsing user agent and content encoding
@@ -95,18 +96,7 @@ class ResponseParser:
             webhttp.Response
         """
         response = webhttp.message.Response()
-        #for request in parsedRequests:
-            #if request.get_header("Method") == "GET":
-                #self.parse_get(request, response)
-            #else:
-
-
         response.set_header("Version", "HTTP/1.1")
-
-        #if buff.get_header("URI") == "/index.html":
-        #    response.set_header("Code", "200")
-        #else:
-        #    response.set_header("Code", "404")
         return ""
 
 

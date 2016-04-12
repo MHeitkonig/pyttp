@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # Start server
     server = webhttp.server.Server(args.address, args.port, args.timeout)
     try:
-        print ("[+] Running webserver at " + str(args.address) + ":" + str(args.port) + " [timeout " + str(args.timeout) + "]")
+        print ("[+] Running webserver at " + str(args.address) + ":" + str(args.port) + " [timeout " + str(args.timeout) + "]\n")
         server.run()
 
     except KeyboardInterrupt:

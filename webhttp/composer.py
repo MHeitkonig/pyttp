@@ -44,7 +44,7 @@ class ResponseComposer:
         response.body = ""
 
         contentdir = str(os.getcwd()) + "/content/"
-        print contentdir
+        #print contentdir
 
         if len(resource) == 1 and resource[0] == "/":
             resource = "index.html"
@@ -54,6 +54,7 @@ class ResponseComposer:
                 #print "loglog " + resource
 
         absolute_path = contentdir + resource
+        status_dir = contentdir + "status/"
         if os.path.isfile(absolute_path):
             if os.access(absolute_path, os.R_OK): # Race condition, I know
                 response.code = 200
@@ -63,7 +64,13 @@ class ResponseComposer:
             response.code = 404
 
         if response.code != 200:
-            response.body = "<html>\n\t<head>\n\t\t<title>" + str(response.code) + "</title>\n\t</head>\n\t<body>\n\t\t<center>\n\t\t\t<h1>" + str(response.code) + " - " + "Description</h1>\n\t\t</center>\n\t</body>\n</html>"
+            status_file = status_dir + str(response.code) + ".html"
+            if os.path.isfile(status_file) and os.access(status_file, os.R_OK):
+                response.body=open(status_file, "r").read()
+            else:
+                print ("[!] No custom error page found for " + str(response.code) + ", using hardcoded default")
+                response.body = "<html>\n\t<head>\n\t\t<title>" + str(response.code) + "</title>\n\t</head>\n\t<body>\n\t\t<center>\n\t\t\t<h1>" + str(response.code) + " - " + response.get_reason(response.code) + "</h1>\n\t\t</center>\n\t</body>\n</html>"
+
         else:
             document = open(absolute_path, "r")
             response.body = document.read()

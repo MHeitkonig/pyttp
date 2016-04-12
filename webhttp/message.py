@@ -9,6 +9,7 @@ reasondict = {
     200 : "OK",
     403 : "Forbidden",
     404 : "Not Found",
+    418 : "I'm A Teapot",
     500 : "Internal Server Error"
 
 }
@@ -55,6 +56,9 @@ class Message(object):
         """
 
         return ""
+
+    def get_reason(self, code):
+        return reasondict[code]
 
 
 class Request(Message):
